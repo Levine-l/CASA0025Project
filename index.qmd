@@ -2,15 +2,20 @@
 
 ## Project Summary 
 
-Fill in the sections below to provide a brief summary of your project. Each section should have no more than 100 words. Do not edit any of the headings.
+This project develops a Google Earth Engine (GEE)–based application for researchers and human rights monitors to systematically identify and explore spatial patterns of suspected scam compounds in Southeast Asia, specifically within Cambodia. This model, referencing data from Amnesty International and ASPI, extracts remote sensing indicators of involuntary detention infrastructure to identify high-risk areas. Using 53 confirmed locations as a reference sample, the project employs a similarity-based analysis method to detect 45 suspicious locations with similar physical characteristics. This dual approach allows for a rigorous comparison between verified sites of human rights abuse and uninvestigated candidate locations. The interactive web platform enhances spatial communication and supports collaborative documentation, and help governments and law enforcement agencies combat criminal gangs to some extent, and better protect national border security.
 
 ### Problem Statement 
 
-What is the problem you’re trying to address using this application? 
+Scam compounds are difficult to systematically detect due to:
+
+Limited verified ground data
+Rapid spatial development in border regions
+Overlap with legitimate urban/commercial environments
+This project aims to support researchers and policy-oriented users by providing a tool to explore potential high-risk areas based on spatial patterns, rather than definitive classification. 
 
 ### End User 
 
-Who are you building this application for? How does it address a need this community has?
+Our platform is designed for human rights monitoring agencies, investigative journalists, and policy-oriented researchers working to combat transnational crime in Southeast Asia. Limited public information and complex on-the-ground situations have long hampered the effectiveness of international interventions. Our interactive maps significantly enhance data accessibility and applicability, fostering collaboration among global stakeholders and providing robust spatial evidence to support international initiatives against forced labor, human trafficking, and torture.
 
 ### Data
 
