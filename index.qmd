@@ -257,8 +257,8 @@ model aligns with existing evidence and where it may be over- or under-selecting
 ### 2. Data Preparation and Precomputations
 
 Before the app is loaded, the main candidate surfaces and diagnostic metrics are prepared
-in Google Earth Engine. Precomputing these outputs keeps the interface responsive and avoids
-running expensive overlap checks every time users change views. Below are key code examples
+in Google Earth Engine. The later interface code consumes these precomputed outputs rather 
+than recalculating the full analysis during user interaction. Below are key code examples
 illustrating the core logic.
 
 **Stage 1: Embedding Similarity**
@@ -383,7 +383,8 @@ For border distance, the workflow uses a raster-based distance transform rather 
 distance calculations. Direct vector distance operations against complex national boundary geometries 
 can be costly in Google Earth Engine when applied to many candidate zones. The boundary features are 
 therefore painted into a binary raster, converted into a distance surface with `fastDistanceTransform()`, 
-and sampled at each candidate zone centroid.
+and sampled at each candidate zone centroid. But it was not used as a hard gate in the final high/medium/low 
+tiering due to data missing.
 
 ```js
 var countries = ee.FeatureCollection('FAO/GAUL/2015/level0')
@@ -510,7 +511,7 @@ function setMapToAoiView(targetMap, aoiName) {
 #### Border Corridor Focus
 
 Users can switch from the regional overview into specific border corridors, including the
-Cambodia Border Corridor, Myanmar-Thailand and the Golden Triangle future extension. These
+Cambodia–Vietnam Border Corridor, Myanmar-Thailand and the Golden Triangle future extension. These
 AOIs make the map easier to interpret by focusing on the corridor scale at which compounds,
 special economic zones, transport routes and border enforcement issues are most relevant.
 
@@ -621,7 +622,7 @@ display, but these are not confirmed sites.
 
 | Output group | Count | Meaning |
 |-------------|------:|---------|
-| Stage 1 candidate points | 24,464 | Broad embedding-based screening output |
+| Stage 1 / all refined candidate zones | 24,464 | Broad embedding-based screening output |
 | Stage 2 high tier | 8,425 | Triggered both development and activity flags |
 | Stage 2 medium tier | 13,059 | One of the two flags triggered |
 | Stage 2 low tier | 2,980 | Neither flag triggered, retained for uncertainty |
@@ -663,13 +664,13 @@ function buildSplitCompareImages(cacheKey, compareGeometry) {
     .clip(compareGeometry);
   var dNDBIGrowth = dNDBI.updateMask(dNDBI.gt(0.015));
 
-  var ntl2021 = ee.ImageCollection('NOAA/VIIRS/DNB/MONTHLY_V1/VCMSLCFG')
+  var ntl2021 = ee.ImageCollection('NOAA/VIIRS/DNB/MONTHLY_V1/VCMCFG')
     .filterBounds(compareGeometry)
     .filterDate('2021-01-01', '2021-12-31')
     .select('avg_rad')
     .median();
 
-  var ntl2024 = ee.ImageCollection('NOAA/VIIRS/DNB/MONTHLY_V1/VCMSLCFG')
+  var ntl2024 = ee.ImageCollection('NOAA/VIIRS/DNB/MONTHLY_V1/VCMCFG')
     .filterBounds(compareGeometry)
     .filterDate('2024-01-01', '2024-12-31')
     .select('avg_rad')
@@ -785,8 +786,6 @@ if (document.readyState === 'loading') {
 ---
 
 ## References
-
-<!-- TODO: 全组补充完整参考文献 -->
 
 - Amerhauser, K. and Goodwin, A. (2026) A world of deceit: Mapping the landscape of the global scam centre phenomenon. Geneva: Global Initiative Against Transnational Organized Crime. Available at: https://globalinitiative.net/wp-content/uploads/2026/03/Kristina-Amerhauser-Alex-Goodwin-A-world-of-deceit-Mapping-the-landscape-of-the-global-scam-centre-phenomenom-GI-TOC-March-2026.pdf (Accessed: 25 April 2026).
 
