@@ -176,11 +176,11 @@ as contextual information rather than used as a hard filtering gate in the final
 
 **Validation**
 
-Validation conduct in two parts. 
+Validation was conducted in two parts. 
 First, Stage 1 was evaluated using raster overlap checks against suspected sites, non-reference 
-confirmed sites, held out confirmed samples, and control points. This shows that the 97th percentile 
+confirmed sites, held out confirmed samples, and control points. This showed that the 97th percentile 
 embedding layer had very high recall, including a mean held out confirmed recall of 1.0 across 
-repeated splits, but it also captured control points. Therefore, Stage 1 is interpreted as a high 
+repeated splits, but it also captured control points. Therefore, Stage 1 was interpreted as a high 
 recall screening surface rather than a precise classifier.
 
 Second, Stage 2 was evaluated using vector overlap checks for the high, medium, low, and all refined 
@@ -260,6 +260,7 @@ Before the app is loaded, the main candidate surfaces and diagnostic metrics are
 in Google Earth Engine. Precomputing these outputs keeps the interface responsive and avoids
 running expensive overlap checks every time users change views. Below are key code examples
 illustrating the core logic.
+
 **Stage 1: Embedding Similarity**
 
 The first code cell loads the 2024 Google Satellite Embedding image for the Cambodia–Vietnam AOI 
@@ -267,6 +268,7 @@ and samples embedding vectors at the selected confirmed reference sites. Each sa
 vector is converted back into a constant image so that it can be compared pixel by pixel with the 
 full embedding image. The dot product across embedding bands produces one similarity image per 
 reference sample, and these images are averaged to create the final Stage 1 similarity surface.
+
 ```js
 var embeddings = ee.ImageCollection('GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL');
 
@@ -305,6 +307,7 @@ var similarityImages = ee.ImageCollection.fromImages(
 
 var meanSimilarity = similarityImages.mean();
 ```
+
 This step produces a broad screening. Pixels above the p97 similarity threshold are treated as 
 candidate areas because they resemble the reference sites in embedding space. The validation 
 results show that this layer has very high recall for known confirmed sites, but it is not 
@@ -349,12 +352,17 @@ function buildS2MetricsImage(yearA, yearB, aoi) {
               .addBands(dNDVI).addBands(dNDBI);
 }
 ```
+
 These metrics are not direct indicators of criminal activity. Decreasing NDVI may indicate 
 vegetation loss or land clearance, while increasing NDBI may suggest stronger built up or 
 impervious surface signal. In the final steps, these bands are reduced over 500 m candidate 
 buffers to produce candidate level mean values.
 
-Stage 2 also calculates spatial context variables for each 500 m candidate zone. These variables describe the candidate geometry and its relationship to known spatial patterns, including candidate-zone area, distance to the nearest confirmed site, and distance to the nearest national border. They are included in the exported candidate metrics table as `area_sqm`, `dist_to_confirmed_m`, and `dist_to_border_m`.
+Stage 2 also calculates spatial context variables for each 500 m candidate zone. These variables 
+describe the candidate geometry and its relationship to known spatial patterns, including 
+candidate-zone area, distance to the nearest confirmed site, and distance to the nearest national 
+border. They are included in the exported candidate metrics table as `area_sqm`, `dist_to_confirmed_m`, 
+and `dist_to_border_m`.
 
 ```js
 var confirmedGeom = confirmed.geometry();
@@ -371,7 +379,11 @@ candidateMetrics = candidateMetrics.map(function(f) {
 });
 ```
 
-For border distance, the workflow uses a raster-based distance transform rather than repeated vector distance calculations. Direct vector distance operations against complex national boundary geometries can be costly in Google Earth Engine when applied to many candidate zones. The boundary features are therefore painted into a binary raster, converted into a distance surface with `fastDistanceTransform()`, and sampled at each candidate zone centroid.
+For border distance, the workflow uses a raster-based distance transform rather than repeated vector 
+distance calculations. Direct vector distance operations against complex national boundary geometries 
+can be costly in Google Earth Engine when applied to many candidate zones. The boundary features are 
+therefore painted into a binary raster, converted into a distance surface with `fastDistanceTransform()`, 
+and sampled at each candidate zone centroid.
 
 ```js
 var countries = ee.FeatureCollection('FAO/GAUL/2015/level0')
@@ -455,8 +467,8 @@ var finalSummary = candidateMetrics.map(function(f) {
 });
 ```
 
-The operational shortlist is narrower than the analytical high tier. It requires higher priority 
-status, proximity to a confirmed reported site, a minimum 2024 night time light value, and positive 
+The operational shortlist is narrower than the analytical high tier. It requires high priority 
+status, proximity to a confirmed reported site, a minimum 2024 night time light value and positive 
 night time light growth. 
 
 ### 3. Interactive Visualization and Analysis
