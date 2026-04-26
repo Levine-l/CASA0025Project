@@ -454,7 +454,7 @@ Resource From: United Nations Office on Drugs and Crime (2023, 2025), Global Ini
 <h3 class="anchored" data-anchor-id="methodology">Methodology</h3>
 <p>The analysis pipeline operates in two stages:</p>
 <p><strong>Stage 1 — Satellite Embedding Similarity</strong></p>
-<p>Stage 1 uses the Google Satellite Embedding V1 annual dataset for 2024. In this dataset, each pixel is represented by a 64-dimensional embedding vector that summarises multi-source satellite information. Within the Cambodia–Vietnam Aoi, 53 confirmed reported sites were available, but only three reproducible confirmed Cambodia reference samples were used for the current embedding run. This small reference set was retained after sensitivity testing because increasing the reference count did not materially improve recovery of known sites, but increased computation.</p>
+<p>Stage 1 uses the Google Satellite Embedding V1 annual dataset for 2024. In this dataset, each pixel is represented by a 64-dimensional embedding vector that summarises multi-source satellite information. Within the Cambodia–Vietnam AOI, 53 confirmed reported sites were available, but only three reproducible confirmed Cambodia reference samples were used for the current embedding run. This small reference set was retained after sensitivity testing because increasing the reference count did not materially improve recovery of known sites, but increased computation.</p>
 <p>For each reference sample, the embedding vector was compared with every pixel in the AOI using dot-product similarity. The final similarity surface was calculated as the mean of each reference similarity image:</p>
 <p><span class="math display">\[
 s_j(x)=\mathbf{e}(x)\cdot\mathbf{r}_j
@@ -478,7 +478,7 @@ S(x)=\frac{1}{J}\sum_{j=1}^{J}s_j(x)
 <li>J is the current number of reference samples (J=3 in this condition);</li>
 <li>(S(x)) is the final mean similarity image.</li>
 </ul>
-<p>Small isolated fragments were removed using a connected pixel filter, and the cleaned raster was vectorised into Stage 1 candidate points. The p97 setting was selected because it was tighter than p95 while retaining high coverage of known confirmed and suspected locations.</p>
+<p>Small isolated fragments were removed using a connected pixel filter, and the cleaned raster was vectorised into Stage 1 candidate points. Selected the p97 because it reduced the matched area ratio relative to p95, while still retaining near-complete coverage of known confirmed and suspected locations.</p>
 <p><strong>Stage 2 — Indicator-Based Refinement</strong></p>
 <p>Stage 1 is intentionally broad, so Stage 2 refines the candidate set using interpretable contextual indicators. Candidate points were converted into 500 m buffered zones, and mean values were extracted from a 2021–2024 metric stack containing Sentinel-2 spectral indices, VIIRS night-time lights, and distance variables.</p>
 <p>The main change metrics are:</p>
@@ -501,7 +501,7 @@ S(x)=\frac{1}{J}\sum_{j=1}^{J}s_j(x)
 \]</span></p>
 <p>Candidates were then assigned to priority tiers. High priority candidates triggered both development and activity flags; medium priority candidates triggered one of the two flags; and low-priority candidates triggered neither flag but retained to preserve uncertainty. Border distance was retained as contextual information rather than used as a hard filtering gate in the final tiering.</p>
 <p><strong>Validation</strong></p>
-<p>Validation conduct in two parts. First, Stage 1 was evaluated using raster overlap checks against suspected sites, non-reference confirmed sites, held out confirmed samples, and control points. This shows that the 97th percentile embedding layer had very high recall, including a mean held out confirmed recall of 1.0 across repeated splits, but it also captured control points. Therefore, Stage 1 is interpreted as a high recall screening surface rather than a precise classifier.</p>
+<p>Validation was conducted in two parts. First, Stage 1 was evaluated using raster overlap checks against suspected sites, non-reference confirmed sites, held out confirmed samples, and control points. This showed that the 97th percentile embedding layer had very high recall, including a mean held out confirmed recall of 1.0 across repeated splits, but it also captured control points. Therefore, Stage 1 was interpreted as a high recall screening surface rather than a precise classifier.</p>
 <p>Second, Stage 2 was evaluated using vector overlap checks for the high, medium, low, and all refined candidate layers. The refined layer reduced control hits from 22/22 under Stage 1 to 7/22 for all refined candidates within 500 m, but recall for known sites also dropped. Therefore, the final output should be read as a prioritisation layer for further investigation, not as a verified list of scam compounds.</p>
 <hr>
 </section>
@@ -552,7 +552,8 @@ S(x)=\frac{1}{J}\sum_{j=1}^{J}s_j(x)
 </section>
 <section id="data-preparation-and-precomputations" class="level3">
 <h3 class="anchored" data-anchor-id="data-preparation-and-precomputations">2. Data Preparation and Precomputations</h3>
-<p>Before the app is loaded, the main candidate surfaces and diagnostic metrics are prepared in Google Earth Engine. Precomputing these outputs keeps the interface responsive and avoids running expensive overlap checks every time users change views. Below are key code examples illustrating the core logic. <strong>Stage 1: Embedding Similarity</strong></p>
+<p>Before the app is loaded, the main candidate surfaces and diagnostic metrics are prepared in Google Earth Engine. The later interface code consumes these precomputed outputs rather than recalculating the full analysis during user interaction. Below are key code examples illustrating the core logic.</p>
+<p><strong>Stage 1: Embedding Similarity</strong></p>
 <p>The first code cell loads the 2024 Google Satellite Embedding image for the Cambodia–Vietnam AOI and samples embedding vectors at the selected confirmed reference sites. Each sampled reference vector is converted back into a constant image so that it can be compared pixel by pixel with the full embedding image. The dot product across embedding bands produces one similarity image per reference sample, and these images are averaged to create the final Stage 1 similarity surface.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> embeddings <span class="op">=</span> ee<span class="op">.</span><span class="fu">ImageCollection</span>(<span class="st">'GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL'</span>)<span class="op">;</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -637,7 +638,7 @@ S(x)=\frac{1}{J}\sum_{j=1}^{J}s_j(x)
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">analysis_year</span><span class="op">:</span> analysisYear</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>For border distance, the workflow uses a raster-based distance transform rather than repeated vector distance calculations. Direct vector distance operations against complex national boundary geometries can be costly in Google Earth Engine when applied to many candidate zones. The boundary features are therefore painted into a binary raster, converted into a distance surface with <code>fastDistanceTransform()</code>, and sampled at each candidate zone centroid.</p>
+<p>For border distance, the workflow uses a raster-based distance transform rather than repeated vector distance calculations. Direct vector distance operations against complex national boundary geometries can be costly in Google Earth Engine when applied to many candidate zones. The boundary features are therefore painted into a binary raster, converted into a distance surface with <code>fastDistanceTransform()</code>, and sampled at each candidate zone centroid. But it was not used as a hard gate in the final high/medium/low tiering due to data missing.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> countries <span class="op">=</span> ee<span class="op">.</span><span class="fu">FeatureCollection</span>(<span class="st">'FAO/GAUL/2015/level0'</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">filterBounds</span>(aoi)<span class="op">;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -708,7 +709,7 @@ S(x)=\frac{1}{J}\sum_{j=1}^{J}s_j(x)
 <span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    <span class="dt">operational_priority_tier</span><span class="op">:</span> operationalTier</span>
 <span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
 <span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The operational shortlist is narrower than the analytical high tier. It requires higher priority status, proximity to a confirmed reported site, a minimum 2024 night time light value, and positive night time light growth.</p>
+<p>The operational shortlist is narrower than the analytical high tier. It requires high priority status, proximity to a confirmed reported site, a minimum 2024 night time light value and positive night time light growth.</p>
 </section>
 <section id="interactive-visualization-and-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="interactive-visualization-and-analysis">3. Interactive Visualization and Analysis</h3>
@@ -738,7 +739,7 @@ S(x)=\frac{1}{J}\sum_{j=1}^{J}s_j(x)
 </section>
 <section id="border-corridor-focus" class="level4">
 <h4 class="anchored" data-anchor-id="border-corridor-focus">Border Corridor Focus</h4>
-<p>Users can switch from the regional overview into specific border corridors, including the Cambodia Border Corridor, Myanmar-Thailand and the Golden Triangle future extension. These AOIs make the map easier to interpret by focusing on the corridor scale at which compounds, special economic zones, transport routes and border enforcement issues are most relevant.</p>
+<p>Users can switch from the regional overview into specific border corridors, including the Cambodia–Vietnam Border Corridor, Myanmar-Thailand and the Golden Triangle future extension. These AOIs make the map easier to interpret by focusing on the corridor scale at which compounds, special economic zones, transport routes and border enforcement issues are most relevant.</p>
 <p><strong>AOI switching and layer refresh</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">renderAoi</span>(aoiName) {</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  activeRenderId <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
@@ -832,7 +833,7 @@ S(x)=\frac{1}{J}\sum_{j=1}^{J}s_j(x)
 </thead>
 <tbody>
 <tr class="odd">
-<td>Stage 1 candidate points</td>
+<td>Stage 1 / all refined candidate zones</td>
 <td style="text-align: right;">24,464</td>
 <td>Broad embedding-based screening output</td>
 </tr>
@@ -888,13 +889,13 @@ S(x)=\frac{1}{J}\sum_{j=1}^{J}s_j(x)
 <span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">clip</span>(compareGeometry)<span class="op">;</span></span>
 <span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> dNDBIGrowth <span class="op">=</span> dNDBI<span class="op">.</span><span class="fu">updateMask</span>(dNDBI<span class="op">.</span><span class="fu">gt</span>(<span class="fl">0.015</span>))<span class="op">;</span></span>
 <span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> ntl2021 <span class="op">=</span> ee<span class="op">.</span><span class="fu">ImageCollection</span>(<span class="st">'NOAA/VIIRS/DNB/MONTHLY_V1/VCMSLCFG'</span>)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> ntl2021 <span class="op">=</span> ee<span class="op">.</span><span class="fu">ImageCollection</span>(<span class="st">'NOAA/VIIRS/DNB/MONTHLY_V1/VCMCFG'</span>)</span>
 <span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">filterBounds</span>(compareGeometry)</span>
 <span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">filterDate</span>(<span class="st">'2021-01-01'</span><span class="op">,</span> <span class="st">'2021-12-31'</span>)</span>
 <span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">select</span>(<span class="st">'avg_rad'</span>)</span>
 <span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">median</span>()<span class="op">;</span></span>
 <span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> ntl2024 <span class="op">=</span> ee<span class="op">.</span><span class="fu">ImageCollection</span>(<span class="st">'NOAA/VIIRS/DNB/MONTHLY_V1/VCMSLCFG'</span>)</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> ntl2024 <span class="op">=</span> ee<span class="op">.</span><span class="fu">ImageCollection</span>(<span class="st">'NOAA/VIIRS/DNB/MONTHLY_V1/VCMCFG'</span>)</span>
 <span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">filterBounds</span>(compareGeometry)</span>
 <span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">filterDate</span>(<span class="st">'2024-01-01'</span><span class="op">,</span> <span class="st">'2024-12-31'</span>)</span>
 <span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">select</span>(<span class="st">'avg_rad'</span>)</span>
@@ -1000,7 +1001,6 @@ if (document.readyState === 'loading') {
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
-<!-- TODO: 全组补充完整参考文献 -->
 <ul>
 <li><p>Amerhauser, K. and Goodwin, A. (2026) A world of deceit: Mapping the landscape of the global scam centre phenomenon. Geneva: Global Initiative Against Transnational Organized Crime. Available at: https://globalinitiative.net/wp-content/uploads/2026/03/Kristina-Amerhauser-Alex-Goodwin-A-world-of-deceit-Mapping-the-landscape-of-the-global-scam-centre-phenomenom-GI-TOC-March-2026.pdf (Accessed: 25 April 2026).</p></li>
 <li><p>Amnesty International (2023). <em>Trapped: The Human Suffering behind the Scam Centres</em>. London: Amnesty International.</p></li>
@@ -1018,7 +1018,7 @@ if (document.readyState === 'loading') {
 CASA0025 Group Project
 </td>
 <td style="color:#eff6ff; font-size:12px; text-align:right; border:none; padding:15px 0;">
-For all precomputation scripts and main app code, please visit: <a href="https://github.com/你们的仓库链接" style="color:#eff6ff;">GitHub Repository</a>
+For all precomputation scripts and main app code, please visit: <a href="https://github.com/Levine-l/CASA0025Project" style="color:#eff6ff;">GitHub Repository</a>
 </td>
 </tr>
 </tbody></table>
