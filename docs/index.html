@@ -447,13 +447,13 @@ Resource From: United Nations Office on Drugs and Crime (2023, 2025), Global Ini
 </tr>
 </tbody>
 </table>
-<p>Based on precise location data from Amnesty International (2025) and ASPI (2025), our final compiled dataset includes confirmed points, suspected points, and control points on GitHub: <a href="https://github.com/Levine-l/CASA0025Project/blob/main/data/scam_points_update.csv" target="_blank">scam_points_update.csv</a></p>
+<p>Based on precise location data from Amnesty International (2025) and ASPI (2025), our final compiled dataset includes confirmed points, suspected points, and control points on GitHub: <a href="https://github.com/Levine-l/CASA0025Project/blob/main/data/processed/scam_points_update.csv" target="_blank">scam_points_update.csv</a></p>
 <hr>
 </section>
 <section id="methodology" class="level3">
 <h3 class="anchored" data-anchor-id="methodology">Methodology</h3>
 <p><strong>Stage 1 — Satellite Embedding Similarity</strong></p>
-<p>Stage 1 applies Google Satellite Embedding similarity to compare 2024 Cambodia–Vietnam pixels with three confirmed Cambodia reference samples. Pixels above the p97 similarity threshold are retained as broad candidates.</p>
+<p>Stage 1 applies Google Satellite Embedding similarity to compare 2024 Cambodia–Vietnam pixels with confirmed Cambodia reference samples. Pixels above the p97 similarity threshold are retained as broad candidates.</p>
 <p><span class="math display">\[
 s_j(x)=\mathbf{e}(x)\cdot\mathbf{r}_j
       =\sum_{k=0}^{63} e_k(x)r_{j,k}
@@ -461,7 +461,7 @@ s_j(x)=\mathbf{e}(x)\cdot\mathbf{r}_j
 <p><span class="math display">\[
 S(x)=\frac{1}{J}\sum_{j=1}^{J}s_j(x)
 \]</span></p>
-<p>Pixels were retained where their mean similarity exceeded the 97th percentile of the sampled similarity distribution:</p>
+<p>Pixels above the p97 similarity threshold are retained as broad candidates.</p>
 <p><span class="math display">\[
 \text{Stage 1 candidate}(x)=
 \begin{cases}
