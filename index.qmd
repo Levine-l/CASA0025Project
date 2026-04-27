@@ -104,7 +104,7 @@ $$
 **Stage 2 — Indicator-Based Refinement**
 
 Stage 2 converts candidates into 500 m zones and extracts Sentinel-2 NDVI/NDBI change, 
-VIIRS nighttime light change and distance variables. 
+VIIRS nighttime light change, distance variables and candidate-zone area. 
 
 $$
 \text{NDVI}=\frac{NIR-Red}{NIR+Red}
@@ -133,18 +133,18 @@ $$
 Spatial context is represented by proximity and size variables:
 
 $$
-d_{\text{confirmed}}(i)=\min_{c \in C}\text{dist}(i,c)
+d_{\text{confirmed}}(i)=\min_{c \in C}\text{dist}(Z_i,c)
 $$
 
 $$
-d_{\text{border}}(i)=\text{dist}(i,B)
+d_{\text{border}}(i)=D_B(\text{centroid}(Z_i))
 $$
 
 $$
 A_i=\text{area}(Z_i)
 $$
 
-where \(Z_i\) is the 500 m candidate zone, \(C\) is the set of confirmed sites, and \(B\) is the national border.
+where \(Z_i\) is the 500 m candidate zone, \(C\) is the set of confirmed sites, and \(D_B\) is the raster distance surface generated from national borders.
 
 
 **Validation**
