@@ -190,25 +190,7 @@ or is blocked by the browser, open it directly in a new tab:
 
 ## How it Works
 
-The application is built entirely in Google Earth Engine and links the analytical pipeline
-to an interactive screening interface. The workflow is organised into four parts.
-
-### 1. Insights and Objectives
-
-The tool responds to a practical analytical challenge: reported scam compounds are often
-clustered near border corridors, special economic zones and rapidly changing peri-urban
-landscapes, but public evidence remains uneven across countries. Instead of treating the
-map as a definitive inventory, the application provides a transparent screening layer that
-helps users compare known reports with satellite-derived signals of recent construction and
-night-time activity.
-
-The main objective is to prioritise locations for further investigation. The app combines
-embedding similarity, Sentinel-2 built-up change, VIIRS night light change and proximity
-context, then presents the results as high, medium and low candidate tiers. Confirmed,
-suspected and control sites are retained in the interface so users can assess where the
-model aligns with existing evidence and where it may be over- or under-selecting.
-
-### 2. Data Preparation and Precomputations
+### 1. Data Preparation and Precomputations
 
 Before the app is loaded, the main candidate surfaces and diagnostic metrics are prepared
 in Google Earth Engine. The later interface code consumes these precomputed outputs rather 
@@ -429,18 +411,14 @@ The operational shortlist is narrower than the analytical high tier. It requires
 status, proximity to a confirmed reported site, a minimum 2024 night time light value and positive 
 night time light growth. 
 
-### 3. Interactive Visualization and Analysis
+### 2. Interactive Visualization and Analysis
 
-The interactive app renders the precomputed outputs as map layers, charts and linked
-controls. Because the study area is transnational, the interface is organised by regional
-scale and evidence type rather than by national or district administrative units.
+Interactive tools cover AOI switching, candidate tiers, reported-site overlays, Year Compare,
+Evidence Scatter and Priority Review.
 
 #### Study Region Overview
 
-The Southeast Asia overview provides a broad spatial context for the five study countries:
-Cambodia, Thailand, Vietnam, Lao PDR and Myanmar. This view is used to frame the project as
-a cross-border problem and to show how reported scam-related locations are distributed
-across multiple jurisdictions rather than within one national system.
+The overview groups the five study countries as one cross-border region.
 
 **Regional AOI setup**
 
@@ -467,10 +445,7 @@ function setMapToAoiView(targetMap, aoiName) {
 
 #### Border Corridor Focus
 
-Users can switch from the regional overview into specific border corridors, including the
-Cambodia–Vietnam Border Corridor, Myanmar-Thailand and the Golden Triangle future extension. These
-AOIs make the map easier to interpret by focusing on the corridor scale at which compounds,
-special economic zones, transport routes and border enforcement issues are most relevant.
+AOI controls zoom into corridor views for focused interpretation.
 
 **AOI switching and layer refresh**
 
@@ -500,16 +475,7 @@ function renderAoi(aoiName) {
 
 #### Candidate Tier and Reported Site Analysis
 
-The main analytical view compares high, medium and low candidate tiers with confirmed,
-suspected and control sites. The left dashboard summarises reported sites, reference sites,
-control locations and candidate counts for the selected AOI, while the map shows whether
-candidate clusters coincide with known reports or appear in areas with limited existing
-documentation.
-
-Candidate density is included in this part of the workflow because it translates many
-individual candidate geometries into a readable spatial concentration layer. This helps
-users identify clusters and compare them with reported site markers without treating every
-candidate pixel as an isolated finding.
+Candidate tiers, KPI cards and reported-site markers help compare model outputs with evidence.
 
 **Candidate tier map layer**
 
@@ -554,10 +520,7 @@ var stack = {
 
 **Candidate Density Visualisation**
 
-This density example belongs to the precomputation workflow rather than the live app file.
-The live app displays the resulting candidate tiers as a cached map layer, while the
-precomputation step below shows how candidate geometries can be converted into a smoothed
-concentration surface for exploratory analysis.
+This example summarises candidate concentration.
 
 ```js
 // Paint candidate polygons at 1 km scale and apply smoothing kernel
@@ -573,10 +536,6 @@ var densityImage = painted
   .selfMask();
 ```
 
-The Stage 2 pipeline retains 24,464 refined candidate zones and assigns them to analytical 
-priority tiers. A much smaller operational shortlist of 15 candidates is used for default 
-display, but these are not confirmed sites.
-
 | Output group | Count | Meaning |
 |-------------|------:|---------|
 | Stage 1 / all refined candidate zones | 24,464 | Broad embedding-based screening output |
@@ -587,11 +546,7 @@ display, but these are not confirmed sites.
 
 #### Temporal Change and Methodology Review
 
-The Year Compare mode supports temporal interpretation by showing built-up growth (dNDBI)
-and night light growth (dNTL) in a draggable split view. The methodology and validation
-panels provide additional transparency by summarising the screening stages, overlap checks
-and evidence scatter plots, so users can review both the mapped outputs and the assumptions
-behind them.
+Year Compare contrasts dNDBI and dNTL growth; validation panels load diagnostics on demand.
 
 **Year Compare change layers**
 
@@ -645,19 +600,12 @@ function buildSplitCompareImages(cacheKey, compareGeometry) {
 }
 ```
 
-### 4. Limitations and Potential Expansion
+### 3. Limitations and Potential Expansion
 
-The outputs should be interpreted as prioritisation evidence, not confirmed scam compound
-locations. The workflow depends on public reports, known reference sites, cloud-filtered
-Sentinel-2 composites and VIIRS night light signals, so both false positives and false
-negatives are expected. Dense urban growth, industrial sites, border trade zones and other
-large facilities can produce similar satellite signatures.
-
-Future expansion could add more verified reference sites, integrate higher-resolution
-commercial imagery where available, include additional years for temporal monitoring and
-extend the same interface logic to the Golden Triangle and other Southeast Asian border
-corridors. The current design keeps these extensions possible by separating precomputed
-candidate layers from the interactive map controls.
+Outputs indicate priorities, not confirmed compounds. Similar satellite signals can also come
+from industrial growth, border trade zones or ordinary urban expansion, so field verification and
+additional evidence remain necessary. Future work can add more reference sites, higher-resolution
+imagery, longer monitoring periods and wider corridor coverage.
 
 <script>
 function applyManualJsHighlight() {
