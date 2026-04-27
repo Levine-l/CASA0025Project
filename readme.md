@@ -148,9 +148,15 @@ CASA0025Project/
 ├── images/                   # Banner, screenshots, figures and report images
 │
 ├── data/           # Cleaned and exported data tables used by the app/report
-│   ├── scam_points_update.csv
-│   ├── Final_Scam_Candidate_Summary_Table.csv
-│   └── refined_validation_summary_CambodiaVietnam_2024.csv
+│   ├──Processed
+│   │   ├──README.md
+│   │   ├── scam_points_update.csv
+│   │   └── scam_sites.csv
+│   ├──raw
+│   │   ├──README.md
+│   │   ├──ASA2394472025ENGLISH.pdf
+│   │   ├──Scamland-Myanmar.pdf
+│   │   └──scam_points_update.xlsx
 │
 ├── gee_scripts/              # Google Earth Engine source code
 |   ├── Preprocessing/
