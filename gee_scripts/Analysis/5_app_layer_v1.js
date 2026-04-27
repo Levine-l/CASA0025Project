@@ -1,11 +1,10 @@
 // ============================================================
-// CASA0025 - Analysis 05
-// 5_app_ready_layers.js
-// Purpose:
-// Prepare app-ready layers and simple query UI for visualization handoff
+// Analysis 05
+// 5_app_layer_v1.js
+// baseline data setup and indicators script
 // Current stable configuration:
 // - AOI: CambodiaVietnam
-// - Stage 1: embedding candidate points (p97, 2024)
+// - Stage 1: embedding candidate points
 // - Stage 2: tiered refinement rebuilt from candidate_metrics asset
 // ============================================================
 

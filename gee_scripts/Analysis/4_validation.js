@@ -1,9 +1,5 @@
 // ============================================================
-// 03_validation.js
-// Validation for Stage-1 embedding screening
-// Based on:
-// - 0_data_setup_and_indicators_for_analysis.js
-// - 1_embedding_similarity.js
+// 04_validation.js
 // ============================================================
 
 // ------------------------------------------------------------
@@ -428,7 +424,7 @@ print('Candidate metrics first geometry', ee.Feature(candidateMetricsRefined.fir
 print('Candidate metrics first geometry type', ee.Feature(candidateMetricsRefined.first()).geometry().type());
 print('Candidate metrics bounds sample', candidateMetricsRefined.geometry().bounds());
 */
-// Rebuild the same tier logic used in Analysis 04
+// Rebuild the same tier logic used in Analysis 03
 var refinedWithTier = candidateMetricsRefined.map(function(f) {
   var dNdbi = ee.Number(f.get('dNDBI_2021_2024'));
   var dNdvi = ee.Number(f.get('dNDVI_2021_2024'));

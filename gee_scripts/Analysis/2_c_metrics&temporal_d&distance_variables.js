@@ -120,7 +120,7 @@ function buildS2MetricsImage(yearA, yearB, aoi) {
 }
 
 // VIIRS monthly DNB dataset has avg_rad and cf_cvg bands.
-// Docs recommend using cf_cvg to judge coverage quality. :contentReference[oaicite:2]{index=2}
+// Using cf_cvg to judge coverage quality.
 function getAnnualVIIRS(year, aoi) {
   var startDate = ee.Date.fromYMD(year, 1, 1);
   var endDate = startDate.advance(1, 'year');
@@ -212,7 +212,7 @@ candidateMetrics = candidateMetrics.map(function(f) {
 
 // ==============================
 // 8.5 CALCULATE AREA AND DISTANCE TO BORDER (Raster Method)
-// (Static spatial metrics for subsequent tiering in 04 script)
+// (Static spatial metrics for subsequent tiering in 03 script)
 // ==============================
 
 // 1. Import global administrative boundaries and filter by AOI to save memory
@@ -221,7 +221,7 @@ var countries = ee.FeatureCollection("FAO/GAUL/2015/level0").filterBounds(aoi);
 // 2. Convert the border polygons into a binary raster image (0 for borders, 1 for elsewhere)
 var borderRaster = ee.Image().byte().paint(countries, 1, 1).unmask(0).not();
 
-// 3. Compute the distance from every pixel to the nearest border (0) in meters
+// 3. Compute the distance from every pixel to the nearest border (0 pixel) in meters
 var distMeters = borderRaster.fastDistanceTransform(1024)
   .multiply(ee.Image.pixelArea().sqrt())
   .rename('dist_to_border_m');
