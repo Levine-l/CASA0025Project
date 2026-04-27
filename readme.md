@@ -157,6 +157,8 @@ CASA0025Project/
 │   │   ├──ASA2394472025ENGLISH.pdf
 │   │   ├──Scamland-Myanmar.pdf
 │   │   └──scam_points_update.xlsx
+│   │
+│   └──README.md
 │
 ├── gee_scripts/              # Google Earth Engine source code
 |   ├── Preprocessing/
