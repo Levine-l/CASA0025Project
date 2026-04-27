@@ -13,6 +13,7 @@ The application combines Google Satellite Embedding similarity, Sentinel-2 chang
 - **Web report:** https://levine-l.github.io/CASA0025Project/
 - **Earth Engine App:** [insert deployed Earth Engine App link]
 - **Source repository:** https://github.com/Levine-l/CASA0025Project
+- **Workspace repository:** https://github.com/Levine-l/CASA0025_project_workspace
 
 --- 
 
