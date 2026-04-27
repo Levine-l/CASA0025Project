@@ -1,0 +1,1 @@
+Contains cleaned CSV datasets categorised into confirmed, suspected, and control sites, prepared for analysis in Google Earth Engine. The dataset focuses on high-risk areas in Southeast Asia, particularly Myanmar, Cambodia, Laos, the Thai border regions, and the Golden Triangle, where scam compound activities have been widely reported.
