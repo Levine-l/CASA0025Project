@@ -243,10 +243,7 @@ sufficiently selective on its own, so the output is passed into stage 2 for cont
 
 **Stage 2.1: Computing Candidate-Level Metrics**
 
-Stage 2 converts the broad embedding output into interpretable candidate level evidence. The code 
-below builds annual Sentinel-2 median composites for 2021 and 2024, then computes NDVI and NDBI for 
-both years. The difference bands, `dNDVI_2021_2024` and `dNDBI_2021_2024`, are used to describe 
-vegetation loss and built up signal change around each candidate zone.
+Stage 2 uses 500 m candidate zones to build candidate-level metrics. Sentinel-2 composites produce NDVI/NDBI change indicators.
 
 ```js
 function getS2Composite(year, aoi) {
@@ -281,16 +278,7 @@ function buildS2MetricsImage(yearA, yearB, aoi) {
 }
 ```
 
-These metrics are not direct indicators of criminal activity. Decreasing NDVI may indicate 
-vegetation loss or land clearance, while increasing NDBI may suggest stronger built up or 
-impervious surface signal. In the final steps, these bands are reduced over 500 m candidate 
-buffers to produce candidate level mean values.
-
-Stage 2 also calculates spatial context variables for each 500 m candidate zone. These variables 
-describe the candidate geometry and its relationship to known spatial patterns, including 
-candidate-zone area, distance to the nearest confirmed site, and distance to the nearest national 
-border. They are included in the exported candidate metrics table as `area_sqm`, `dist_to_confirmed_m`, 
-and `dist_to_border_m`.
+Candidate zones also receive proximity context, including distance to the nearest confirmed site.
 
 ```js
 var confirmedGeom = confirmed.geometry();
@@ -307,12 +295,7 @@ candidateMetrics = candidateMetrics.map(function(f) {
 });
 ```
 
-For border distance, the workflow uses a raster-based distance transform rather than repeated vector 
-distance calculations. Direct vector distance operations against complex national boundary geometries 
-can be costly in Google Earth Engine when applied to many candidate zones. The boundary features are 
-therefore painted into a binary raster, converted into a distance surface with `fastDistanceTransform()`, 
-and sampled at each candidate zone centroid. But it was not used as a hard gate in the final high/medium/low 
-tiering due to data missing.
+Border distance and area are added as spatial context fields. Border distance uses a raster distance surface with `fastDistanceTransform()`, avoiding repeated vector distance calculations.
 
 ```js
 var countries = ee.FeatureCollection('FAO/GAUL/2015/level0')
@@ -344,7 +327,7 @@ candidateMetrics = candidateMetrics.map(function(f) {
 });
 ```
 
-The resulting spatial context fields are carried into the final summary table. The variable `dist_to_border_m` is used to derive `near_border_flag`, while `area_sqm` is retained as candidate-zone metadata and displayed in the application together with the other candidate attributes.
+These fields feed the final summary table and app display.
 
 
 **Stage 2.2: Candidate Tier Classification**
