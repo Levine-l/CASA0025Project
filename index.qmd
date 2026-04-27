@@ -69,7 +69,7 @@ Based on precise location data from Amnesty International (2025) and ASPI (2025)
 **Stage 1 — Satellite Embedding Similarity**
  
 Stage 1 applies Google Satellite Embedding similarity to compare 2024 Cambodia–Vietnam 
-pixels with three confirmed Cambodia reference samples. Pixels above the p97 similarity 
+pixels with confirmed Cambodia reference samples. Pixels above the p97 similarity 
 threshold are retained as broad candidates.
 
 $$
@@ -81,8 +81,7 @@ $$
 S(x)=\frac{1}{J}\sum_{j=1}^{J}s_j(x)
 $$
 
-Pixels were retained where their mean similarity exceeded the 97th percentile of the sampled 
-similarity distribution:
+Pixels above the p97 similarity threshold are retained as broad candidates.
 
 $$
 \text{Stage 1 candidate}(x)=
