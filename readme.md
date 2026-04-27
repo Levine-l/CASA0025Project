@@ -11,14 +11,17 @@ The application combines Google Satellite Embedding similarity, Sentinel-2 chang
 ## Live Links
 
 - **Web report:** https://levine-l.github.io/CASA0025Project/
-- **Earth Engine App:** [insert deployed Earth Engine App link]
+- **Earth Engine App:** https://orbital-kit-415514.projects.earthengine.app/view/scam-compound-explorer
 - **Source repository:** https://github.com/Levine-l/CASA0025Project
 - **Workspace repository:** https://github.com/Levine-l/CASA0025_project_workspace
 
 --- 
 
 ## Team Roles 
-* **Preprocessing (Researches/CSV/GITHUB/GEE):** Piyapa, Shuting * **Analysis (GEE):** Hongxi, Jiayi * **Visualisation (Quarto):** Siyi, Wanqi All team members contribute to the final presentation. 
+ **Preprocessing:** Piyapa, Shuting 
+ **Analysis:** Hongxi, Jiayi 
+ **Visualisation:** Siyi, Wanqi 
+All team members contribute to the final presentation. 
 
 ---
 
@@ -142,22 +145,25 @@ CASA0025Project/
 │
 ├── images/                   # Banner, screenshots, figures and report images
 │
-├── data_processed/           # Cleaned and exported data tables used by the app/report
+├── data/           # Cleaned and exported data tables used by the app/report
 │   ├── scam_points_update.csv
 │   ├── Final_Scam_Candidate_Summary_Table.csv
 │   └── refined_validation_summary_CambodiaVietnam_2024.csv
 │
 ├── gee_scripts/              # Google Earth Engine source code
-│   ├── analysis/
+|   ├── Preprocessing/
+│   │   ├── 01_data_setup_and_indicators.txt
+│   │   └──README.md
+│   ├── Analysis/
 │   │   ├── 0_data_setup_and_indicators_for_analysis.js
 │   │   ├── 1_embedding_similarity.js
 │   │   ├── 2_candidate_metrics_temporal_distance.js
-│   │   ├── 3_final_tiering_summary.js
+│   │   ├── 3_final_tiering&summary.js
 │   │   ├── 4_validation.js
 │   │   └── 5_app_ready_layers.js
 │   │
-│   └── visualisation/
+│   └── visualization/
 │       ├── scam_compound_gee_app_v3.js
-│       └── scam_compound_gee_app_v3_2.js
+│       └── scam_compound_gee_app_v3_3.js
 │
 └── docs/                     # Rendered GitHub Pages output
