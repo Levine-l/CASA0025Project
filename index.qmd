@@ -1,5 +1,5 @@
 ---
-title-block-banner: "https://raw.githubusercontent.com/Levine-l/CASA0025Project/8aaf809e57a1a330c9efa955aba4dc80c61128cd/images/kamran-abdullayev-okkwqpKX2qw-unsplash.jpg"
+title-block-banner: images/kamran-abdullayev-okkwqpKX2qw-unsplash.jpg
 title: "Scam Compound Explorer"
 subtitle: "Remote Sensing Detection of Suspected Scam Compounds in Southeast Asia"
 format:
