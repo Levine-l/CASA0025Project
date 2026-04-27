@@ -18,9 +18,11 @@ The application combines Google Satellite Embedding similarity, Sentinel-2 chang
 --- 
 
 ## Team Roles 
- **Preprocessing:** Piyapa, Shuting 
- **Analysis:** Hongxi, Jiayi 
- **Visualisation:** Siyi, Wanqi 
+
+- **Preprocessing:** Piyapa, Shuting
+- **Analysis:** Hongxi, Jiayi
+- **Visualisation:** Siyi, Wanqi
+
 All team members contribute to the final presentation. 
 
 ---
