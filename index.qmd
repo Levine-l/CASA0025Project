@@ -332,10 +332,7 @@ These fields feed the final summary table and app display.
 
 **Stage 2.2: Candidate Tier Classification**
 
-The tiering step uses the precomputed candidate metrics, a candidate is flagged for development 
-evidence when built up signal increases and vegetation signal decreases. It is flagged for activity 
-evidence when night time light radiance increases. These two flags are then combined to produce 
-high, medium and low analytical priority tiers.
+Precomputed metrics are converted into development and activity flags, then combined into high, medium and low priority tiers.
 
 ```js
 var finalSummary = candidateMetrics.map(function(f) {
@@ -380,9 +377,7 @@ var finalSummary = candidateMetrics.map(function(f) {
 });
 ```
 
-The operational shortlist is narrower than the analytical high tier. It requires high priority 
-status, proximity to a confirmed reported site, a minimum 2024 night time light value and positive 
-night time light growth. 
+The operational shortlist applies stricter proximity, night-time light and growth conditions for default display.
 
 ### 2. Interactive Visualization and Analysis
 
