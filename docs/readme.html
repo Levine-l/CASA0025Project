@@ -250,18 +250,172 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>Use this repository to host a website for your CASA0025 final project by following these stpes:</p>
-<ol type="1">
-<li>clone this repository</li>
-<li>install <a href="https://quarto.org/docs/download/">quarto</a></li>
-<li>edit the ‘index.qmd’ file with the contents of your project</li>
-<li>using terminal, navigate to the project directory and run “quarto render”</li>
-<li>push the changes to your github repository</li>
-<li>on github, navigate to Settings&gt;Pages&gt;Build and Deployment. Make sure that under “Source” it says “deploy from branch”. Under “Branch”, select “Main” in the first dropdown and “Docs” under the second drop down. Then press “Save”</li>
-</ol>
-<p>Your website should now be available under https://{your_username}.github.io/{your_repo_name}</p>
+<section id="casa0025-scam-compound-explorer" class="level1">
+<h1>CASA0025 – Scam Compound Explorer</h1>
+<section id="project-overview" class="level2">
+<h2 class="anchored" data-anchor-id="project-overview">Project Overview</h2>
+<p>This project develops a Google Earth Engine (GEE)–based application for exploring candidate locations that are spatially similar to documented scam-compound sites in Southeast Asia, with the main implemented workflow focused on the <strong>Cambodia–Vietnam AOI</strong>.</p>
+<p>The application combines Google Satellite Embedding similarity, Sentinel-2 change indicators, VIIRS night-time lights, and contextual distance variables to support a two-stage remote-sensing screening and prioritisation workflow. The results are intended to help users explore possible compound-like development patterns, not to provide definitive confirmation of scam-compound activity.</p>
+<hr>
+</section>
+<section id="live-links" class="level2">
+<h2 class="anchored" data-anchor-id="live-links">Live Links</h2>
+<ul>
+<li><strong>Web report:</strong> https://levine-l.github.io/CASA0025Project/</li>
+<li><strong>Earth Engine App:</strong> [insert deployed Earth Engine App link]</li>
+<li><strong>Source repository:</strong> https://github.com/Levine-l/CASA0025Project</li>
+</ul>
+<hr>
+</section>
+<section id="team-roles" class="level2">
+<h2 class="anchored" data-anchor-id="team-roles">Team Roles</h2>
+<ul>
+<li><strong>Preprocessing (Researches/CSV/GITHUB/GEE):</strong> Piyapa, Shuting * <strong>Analysis (GEE):</strong> Hongxi, Jiayi * <strong>Visualisation (Quarto):</strong> Siyi, Wanqi All team members contribute to the final presentation.</li>
+</ul>
+<hr>
+</section>
+<section id="problem-statement" class="level2">
+<h2 class="anchored" data-anchor-id="problem-statement">Problem Statement</h2>
+<p>Scam compounds are difficult to systematically monitor because of:</p>
+<ul>
+<li>limited verified ground-truth data;</li>
+<li>rapid development in border regions;</li>
+<li>overlap with legitimate urban, industrial, and commercial environments;</li>
+<li>fragmented reporting across countries and organisations.</li>
+</ul>
+<p>This project aims to support researchers, investigative journalists, human-rights monitors, and policy-oriented users by providing an interpretable geospatial tool for exploring potential high-risk areas based on satellite-derived spatial patterns. The workflow is designed for screening and prioritisation rather than definitive classification.</p>
+<hr>
+</section>
+<section id="objectives" class="level2">
+<h2 class="anchored" data-anchor-id="objectives">Objectives</h2>
+<ul>
+<li>Compile and structure reported confirmed, suspected, and control locations for use in GEE.</li>
+<li>Use Google Satellite Embedding similarity to generate a broad candidate screening layer.</li>
+<li>Refine candidate locations using Sentinel-2 vegetation and built-up change indicators, VIIRS night-time lights, and contextual distance variables.</li>
+<li>Validate the workflow using suspected sites, non-reference confirmed sites, held-out confirmed samples, and control points.</li>
+<li>Build an interactive GEE application that allows users to inspect candidate density, reported sites, validation results, evidence indicators, and priority tiers.</li>
+</ul>
+<hr>
+</section>
+<section id="study-area" class="level2">
+<h2 class="anchored" data-anchor-id="study-area">Study Area</h2>
+<p>The wider study design considers several Southeast Asian border regions, including:</p>
+<ul>
+<li>Cambodia–Vietnam corridor;</li>
+<li>Myanmar–Thailand border;</li>
+<li>Golden Triangle region.</li>
+</ul>
+<p>The fully implemented and validated analysis workflow currently focuses on the <strong>Cambodia–Vietnam AOI</strong>, where the available reported-site dataset contains:</p>
+<ul>
+<li>53 confirmed reported sites;</li>
+<li>45 suspected reported sites;</li>
+<li>22 control points.</li>
+</ul>
+<p>Myanmar–Thailand and the Golden Triangle are retained as regional context or possible extension AOIs, rather than fully validated candidate-detection outputs at this stage.</p>
+<hr>
+</section>
+<section id="methodology-summary" class="level2">
+<h2 class="anchored" data-anchor-id="methodology-summary">Methodology Summary</h2>
+<p>The analysis is organised as a two-stage workflow.</p>
+<section id="stage-1-satellite-embedding-similarity" class="level3">
+<h3 class="anchored" data-anchor-id="stage-1-satellite-embedding-similarity">Stage 1: Satellite Embedding Similarity</h3>
+<p>Stage 1 uses the <strong>Google Satellite Embedding V1 Annual</strong> dataset for 2024. Each pixel is represented by a 64-dimensional embedding vector. Three reproducible confirmed Cambodia reference samples are used to construct a similarity surface over the Cambodia–Vietnam AOI.</p>
+<p>For each reference sample, the workflow computes dot-product similarity between the reference embedding vector and each AOI pixel embedding vector. The per-reference similarity images are then averaged. Pixels above the 97th percentile of the sampled similarity distribution are retained as broad Stage 1 candidates.</p>
+<p>The preferred Stage 1 configuration is:</p>
+<ul>
+<li>analysis year: 2024;</li>
+<li>AOI: Cambodia–Vietnam;</li>
+<li>reference samples: 3 confirmed Cambodia sites;</li>
+<li>sample scale: 20 m;</li>
+<li>threshold: p97;</li>
+<li>minimum connected pixels: 4.</li>
+</ul>
+</section>
+<section id="stage-2-indicator-based-refinement" class="level3">
+<h3 class="anchored" data-anchor-id="stage-2-indicator-based-refinement">Stage 2: Indicator-Based Refinement</h3>
+<p>Stage 2 converts the broad Stage 1 candidate output into candidate-level evidence. Candidate points are buffered into 500 m zones, then summarised against a 2021–2024 metric stack containing:</p>
+<ul>
+<li>NDVI change;</li>
+<li>NDBI change;</li>
+<li>VIIRS night-time-light change;</li>
+<li>2024 night-time-light intensity;</li>
+<li>distance to nearest confirmed reported site;</li>
+<li>distance to national border.</li>
+</ul>
+<p>Candidate tiering is based on two main evidence flags:</p>
+<ul>
+<li><strong>development flag:</strong> built-up signal increases while vegetation signal decreases;</li>
+<li><strong>activity flag:</strong> night-time-light radiance increases.</li>
+</ul>
+<p>Candidates are assigned to:</p>
+<ul>
+<li><strong>high tier:</strong> both development and activity flags triggered;</li>
+<li><strong>medium tier:</strong> one of the two flags triggered;</li>
+<li><strong>low tier:</strong> neither flag triggered, retained for uncertainty.</li>
+</ul>
+<p>A smaller operational shortlist is used for default app display. This shortlist is narrower than the analytical high tier and applies stricter distance and night-time-light conditions.</p>
+<hr>
+</section>
+</section>
+<section id="validation-summary" class="level2">
+<h2 class="anchored" data-anchor-id="validation-summary">Validation Summary</h2>
+<p>Validation is treated as a check on screening behaviour, not as proof of site status.</p>
+<p>Stage 1 achieved a mean held-out confirmed recall of 1.0 across repeated splits, indicating that the embedding screening layer recovered known confirmed-site patterns effectively. However, Stage 1 also captured control points, so it is interpreted as a high-recall screening surface rather than a precise classifier.</p>
+<p>Stage 2 refinement reduced control hits from 22/22 under Stage 1 to 7/22 for all refined candidates within 500 m. This improved specificity but also reduced recall for known sites. Therefore, the final output should be interpreted as a prioritisation layer for further investigation, not as a verified list of scam compounds.</p>
+<hr>
+</section>
+<section id="key-outputs" class="level2">
+<h2 class="anchored" data-anchor-id="key-outputs">Key Outputs</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 44%">
+<col style="width: 24%">
+<col style="width: 31%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Output group</th>
+<th style="text-align: right;">Count</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Stage 1 / all refined candidate zones</td>
+<td style="text-align: right;">24,464</td>
+<td>Broad embedding-derived candidate universe passed into Stage 2 refinement</td>
+</tr>
+<tr class="even">
+<td>Stage 2 high tier</td>
+<td style="text-align: right;">8,425</td>
+<td>Development and activity flags both triggered</td>
+</tr>
+<tr class="odd">
+<td>Stage 2 medium tier</td>
+<td style="text-align: right;">13,059</td>
+<td>One of the two flags triggered</td>
+</tr>
+<tr class="even">
+<td>Stage 2 low tier</td>
+<td style="text-align: right;">2,980</td>
+<td>Neither flag triggered, retained for uncertainty</td>
+</tr>
+<tr class="odd">
+<td>Operational shortlist</td>
+<td style="text-align: right;">15</td>
+<td>Narrow default-display subset using stricter distance and night-time-light conditions</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="repository-structure" class="level2">
+<h2 class="anchored" data-anchor-id="repository-structure">Repository Structure</h2>
+<p>```text CASA0025Project/ │ ├── index.qmd # Main Quarto web report ├── _quarto.yml # Quarto project configuration ├── scam.css # Custom web styling ├── README.md # Project documentation │ ├── images/ # Banner, screenshots, figures and report images │ ├── data_processed/ # Cleaned and exported data tables used by the app/report │ ├── scam_points_update.csv │ ├── Final_Scam_Candidate_Summary_Table.csv │ └── refined_validation_summary_CambodiaVietnam_2024.csv │ ├── gee_scripts/ # Google Earth Engine source code │ ├── analysis/ │ │ ├── 0_data_setup_and_indicators_for_analysis.js │ │ ├── 1_embedding_similarity.js │ │ ├── 2_candidate_metrics_temporal_distance.js │ │ ├── 3_final_tiering_summary.js │ │ ├── 4_validation.js │ │ └── 5_app_ready_layers.js │ │ │ └── visualisation/ │ ├── scam_compound_gee_app_v3.js │ └── scam_compound_gee_app_v3_2.js │ └── docs/ # Rendered GitHub Pages output</p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
