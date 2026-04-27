@@ -37,7 +37,7 @@ and law enforcement agencies combat criminal gangs to some extent, and better pr
 border security.
 
 ::: {style="text-align: center;"}
-![](image/summary%20picture.jpg){width=100%}
+![](images/summary%20picture.jpg){width=100%}
 
 <p style="font-size: 0.9em; margin-top: 0.5em;">Resource From: United Nations Office on Drugs and Crime (2023, 2025), Global Initiative (2026)</p>
 :::
@@ -201,14 +201,14 @@ shows the Year Compare mode, where users can drag the divider to compare built-u
 
 :::: {.columns layout-align="center"}
 ::: {.column width="48%"}
-![Cambodia Border Corridor interface](image/interface_cambodia_border.png)
+![Cambodia Border Corridor interface](images/interface_cambodia_border.png)
 
 *Cambodia Border Corridor view*
 :::
 ::: {.column width="4%"}
 :::
 ::: {.column width="48%"}
-![Year Compare interface](image/interface_year_compare.png)
+![Year Compare interface](images/interface_year_compare.png)
 
 *Year Compare view*
 :::
