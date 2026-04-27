@@ -262,16 +262,15 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="live-links">Live Links</h2>
 <ul>
 <li><strong>Web report:</strong> https://levine-l.github.io/CASA0025Project/</li>
-<li><strong>Earth Engine App:</strong> [insert deployed Earth Engine App link]</li>
+<li><strong>Earth Engine App:</strong> https://orbital-kit-415514.projects.earthengine.app/view/scam-compound-explorer</li>
 <li><strong>Source repository:</strong> https://github.com/Levine-l/CASA0025Project</li>
+<li><strong>Workspace repository:</strong> https://github.com/Levine-l/CASA0025_project_workspace</li>
 </ul>
 <hr>
 </section>
 <section id="team-roles" class="level2">
 <h2 class="anchored" data-anchor-id="team-roles">Team Roles</h2>
-<ul>
-<li><strong>Preprocessing (Researches/CSV/GITHUB/GEE):</strong> Piyapa, Shuting * <strong>Analysis (GEE):</strong> Hongxi, Jiayi * <strong>Visualisation (Quarto):</strong> Siyi, Wanqi All team members contribute to the final presentation.</li>
-</ul>
+<p><strong>Preprocessing:</strong> Piyapa, Shuting <strong>Analysis:</strong> Hongxi, Jiayi <strong>Visualisation:</strong> Siyi, Wanqi All team members contribute to the final presentation.</p>
 <hr>
 </section>
 <section id="problem-statement" class="level2">
@@ -411,7 +410,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="repository-structure" class="level2">
 <h2 class="anchored" data-anchor-id="repository-structure">Repository Structure</h2>
-<p>```text CASA0025Project/ │ ├── index.qmd # Main Quarto web report ├── _quarto.yml # Quarto project configuration ├── scam.css # Custom web styling ├── README.md # Project documentation │ ├── images/ # Banner, screenshots, figures and report images │ ├── data_processed/ # Cleaned and exported data tables used by the app/report │ ├── scam_points_update.csv │ ├── Final_Scam_Candidate_Summary_Table.csv │ └── refined_validation_summary_CambodiaVietnam_2024.csv │ ├── gee_scripts/ # Google Earth Engine source code │ ├── analysis/ │ │ ├── 0_data_setup_and_indicators_for_analysis.js │ │ ├── 1_embedding_similarity.js │ │ ├── 2_candidate_metrics_temporal_distance.js │ │ ├── 3_final_tiering_summary.js │ │ ├── 4_validation.js │ │ └── 5_app_ready_layers.js │ │ │ └── visualisation/ │ ├── scam_compound_gee_app_v3.js │ └── scam_compound_gee_app_v3_2.js │ └── docs/ # Rendered GitHub Pages output</p>
+<p>```text CASA0025Project/ │ ├── index.qmd # Main Quarto web report ├── _quarto.yml # Quarto project configuration ├── scam.css # Custom web styling ├── README.md # Project documentation │ ├── images/ # Banner, screenshots, figures and report images │ ├── data/ # Cleaned and exported data tables used by the app/report │ ├── scam_points_update.csv │ ├── Final_Scam_Candidate_Summary_Table.csv │ └── refined_validation_summary_CambodiaVietnam_2024.csv │ ├── gee_scripts/ # Google Earth Engine source code | ├── Preprocessing/ │ │ ├── 01_data_setup_and_indicators.txt │ │ └──README.md │ ├── Analysis/ │ │ ├── 0_data_setup_and_indicators_for_analysis.js │ │ ├── 1_embedding_similarity.js │ │ ├── 2_candidate_metrics_temporal_distance.js │ │ ├── 3_final_tiering&amp;summary.js │ │ ├── 4_validation.js │ │ └── 5_app_ready_layers.js │ │ │ └── visualization/ │ ├── scam_compound_gee_app_v3.js │ └── scam_compound_gee_app_v3_3.js │ └── docs/ # Rendered GitHub Pages output</p>
 
 
 </section>
