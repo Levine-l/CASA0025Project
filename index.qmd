@@ -1,5 +1,5 @@
 ---
-title-block-banner: images/kamran-abdullayev-okkwqpKX2qw-unsplash.jpg
+title-block-banner: images/scam-compound-banner.png
 title: "Scam Compound Explorer"
 subtitle: "Remote Sensing Detection of Suspected Scam Compounds in Southeast Asia"
 format:
@@ -261,6 +261,7 @@ in Google Earth Engine. The later interface code consumes these precomputed outp
 than recalculating the full analysis during user interaction. Below are key code examples
 illustrating the core logic.
 
+
 **Stage 1: Embedding Similarity**
 
 The first code cell loads the 2024 Google Satellite Embedding image for the Cambodia–Vietnam AOI 
@@ -312,6 +313,7 @@ This step produces a broad screening. Pixels above the p97 similarity threshold 
 candidate areas because they resemble the reference sites in embedding space. The validation 
 results show that this layer has very high recall for known confirmed sites, but it is not 
 sufficiently selective on its own, so the output is passed into stage 2 for contextual refinement.
+
 
 **Stage 2.1: Computing Candidate-Level Metrics**
 
@@ -417,6 +419,7 @@ candidateMetrics = candidateMetrics.map(function(f) {
 ```
 
 The resulting spatial context fields are carried into the final summary table. The variable `dist_to_border_m` is used to derive `near_border_flag`, while `area_sqm` is retained as candidate-zone metadata and displayed in the application together with the other candidate attributes.
+
 
 **Stage 2.2: Candidate Tier Classification**
 
