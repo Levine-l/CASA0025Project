@@ -130,6 +130,22 @@ $$
 \text{activity flag} = \Delta \text{NTL} > 0
 $$
 
+Spatial context is represented by proximity and size variables:
+
+$$
+d_{\text{confirmed}}(i)=\min_{c \in C}\text{dist}(i,c)
+$$
+
+$$
+d_{\text{border}}(i)=\text{dist}(i,B)
+$$
+
+$$
+A_i=\text{area}(Z_i)
+$$
+
+where \(Z_i\) is the 500 m candidate zone, \(C\) is the set of confirmed sites, and \(B\) is the national border.
+
 
 **Validation**
 
