@@ -202,15 +202,11 @@ shows the Year Compare mode, where users can drag the divider to compare built-u
 :::: {.columns layout-align="center"}
 ::: {.column width="48%"}
 ![Cambodia Border Corridor interface](images/interface_cambodia_border.png)
-
-*Cambodia Border Corridor view*
 :::
 ::: {.column width="4%"}
 :::
 ::: {.column width="48%"}
 ![Year Compare interface](images/interface_year_compare.png)
-
-*Year Compare view*
 :::
 ::::
 
