@@ -243,7 +243,7 @@ sufficiently selective on its own, so the output is passed into stage 2 for cont
 
 **Stage 2.1: Computing Candidate-Level Metrics**
 
-Stage 2 uses 500 m candidate zones to build candidate-level metrics. Sentinel-2 composites produce NDVI/NDBI change indicators.
+Stage 2 uses 500 m candidate zones to build candidate-level metrics. Sentinel-2 and VIIRS composites produce NDVI/NDBI and night-time light change indicators.
 
 ```js
 function getS2Composite(year, aoi) {
