@@ -20,7 +20,8 @@ var endDate = startDate.advance(1, 'year');
 // Compound/site scale
 var sampleScale = 20;//set 20 since perform a bit better than 10 and 30.
 
-// Use 3 references
+// Use 3 references due to increase does not improve the validation performance,
+//but it increased the computational load in gee.
 var referenceLimit = 3;
 
 // Similarity statistics from sampled pixels, not full-region reduction
